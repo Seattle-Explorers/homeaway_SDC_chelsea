@@ -3,3 +3,4 @@ node_modules
 util/profileImages
 test/testImages
 client/dist
+db/CSVs
