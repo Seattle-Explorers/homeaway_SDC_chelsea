@@ -48,6 +48,7 @@
     "eslint-plugin-jest": "^23.13.2",
     "express": "^4.17.1",
     "faker": "^4.1.0",
+    "fs": "0.0.1-security",
     "jest": "^26.0.1",
     "jest-styled-components": "^7.0.2",
     "lodash": "^4.17.15",

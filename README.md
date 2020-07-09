@@ -63,40 +63,7 @@ To get an individual listing:
     - Content: {}
 
 ## noSQL schema design under consideration
-{
-  id: number,
-  listingId: string,
-  user: {
-    userId: number,
-    name: string,
-    image: string
-  },
-  title: string,
-  body: string,
-  guests: number,
-  bedrooms: number,
-  beds: number,
-  publicBaths: number,
-  privateBaths: number,
-  sleepingArrangements: [
-    {
-      id: number,
-      beds: {
-        type: string,
-        amount: number,
-      },
-      location: string,
-    }
-  ],
-  amenities: [
-    {
-      id: number,
-      type: string,
-      amenity: string,
-      description: string
-    }
-  ]
-}
+See noSQL Schema Design file saved in the root of this repository.
 
 ## SQL schema design under consideration
 
