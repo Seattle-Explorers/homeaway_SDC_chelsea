@@ -1,25 +1,28 @@
 const fs = require('fs');
 const faker = require('faker');
+const path = require('path');
 const _ = require('lodash');
-const { bedStrings, amenityStrings, titleStrings } = require('./seedStrings.js');
+const { bedStrings, amenityStrings, titleStrings } = require('../util/seedStrings.js');
 
 // =====store re-used data between CSVs=====
-// store user ids
-// store listing ids
-// store amenity ids
-// store array of bedroom objects
+const userIds = [];
+const listingIds = [];
+const amenityIds = [];
+const bedrooms = [];
 
 // =====generate amenities CSV (static)=====
-// create write stream to amenities.csv in CSV files directory
-// store string starting with headers: id,type,amenity
-// for each amenity type...
-  // for each amenity...
-    // generate and store unique id in amenity ids
-    // add to main string: id,type,amenity
-// write stored string to stream
-// on finish event
-  // log all data written
-  // close the stream
+const writeStreamA = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'amenities.csv'));
+let amenitiesBlock = '"id","type","amenity"\n';
+amenityStrings.forEach((category, catIndex) => {
+  category.amenities.forEach((amenity, amIndex) => {
+    const id = `am-${catIndex}-${amIndex}`;
+    amenityIds.push(id);
+    amenitiesBlock += `"${id}","${category.type}","${amenity}"${'\n'}`;
+  });
+});
+writeStreamA.write(amenitiesBlock);
+writeStreamA.on('finish', () => {
+  console.log('amenities data written to file');
 
   // -------> next dependent process
 
@@ -35,7 +38,6 @@ const { bedStrings, amenityStrings, titleStrings } = require('./seedStrings.js')
   // write stored string to stream
   // on finish event
     // log all data written
-    // close the stream
 
     // -------> next dependent process
 
@@ -66,7 +68,6 @@ const { bedStrings, amenityStrings, titleStrings } = require('./seedStrings.js')
     // write stored string to stream
     // on finish event
       // log all data written
-      // close the stream
 
       // -------> next dependent process
 
@@ -80,7 +81,6 @@ const { bedStrings, amenityStrings, titleStrings } = require('./seedStrings.js')
       // write stored string to stream
       // on finish event
         // log all data written
-        // close the stream
 
         // -------> next dependent process
 
@@ -96,4 +96,10 @@ const { bedStrings, amenityStrings, titleStrings } = require('./seedStrings.js')
         // write stored string to stream
         // on finish event
           // log all data written
-          // close the stream
+
+        // close the stream
+      // close the stream
+    // close the stream
+  // close the stream
+});
+writeStreamA.end();

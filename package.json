@@ -12,7 +12,8 @@
     "server:prod": "node db/seed.js  && node server/server.js",
     "client:build": "webpack --mode production",
     "client:dev": "webpack --watch --mode development",
-    "updateSnapshots": "jest --updateSnapshot"
+    "updateSnapshots": "jest --updateSnapshot",
+    "writeCSVs": "node db/generateCSV.js"
   },
   "repository": {
     "type": "git",
