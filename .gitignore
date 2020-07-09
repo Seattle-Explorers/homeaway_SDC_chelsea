@@ -4,3 +4,4 @@ util/profileImages
 test/testImages
 client/dist
 db/CSVs
+db/userImages

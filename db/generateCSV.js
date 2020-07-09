@@ -18,7 +18,6 @@ const amenityIds = [];
 const bedrooms = [];
 
 // =====generate amenities CSV=====
-const writeStreamA = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'amenities.csv'));
 let amenitiesBlock = '"id","type","amenity"\n';
 amenityStrings.forEach((category, catIndex) => {
   category.amenities.forEach((amenity, amIndex) => {
@@ -27,6 +26,7 @@ amenityStrings.forEach((category, catIndex) => {
     amenitiesBlock += `"${id}","${category.type}","${amenity}"\n`;
   });
 });
+const writeStreamA = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'amenities.csv'));
 writeStreamA.write(amenitiesBlock);
 writeStreamA.on('finish', () => {
   console.log('amenities data written to file');
@@ -34,7 +34,6 @@ writeStreamA.on('finish', () => {
   // -------> next dependent process
 
   // =====generate users CSV=====
-  const writeStreamU = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'users.csv'));
   let usersBlock = '"userId","name","image"\n';
   for (let i = 0; i < targetedRecords * 0.5; i += 1) {
     const id = `us-${i}`;
@@ -43,6 +42,7 @@ writeStreamA.on('finish', () => {
     const imageURL = _.sample(images);
     usersBlock += `"${id}","${name}","${imageURL}"\n`;
   }
+  const writeStreamU = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'users.csv'));
   writeStreamU.write(usersBlock);
   writeStreamU.on('finish', () => {
     console.log('users data written to file');
@@ -50,8 +50,8 @@ writeStreamA.on('finish', () => {
     // -------> next dependent process
 
     // =====generate listings CSV=====
-    // create write stream to listings.csv in CSV files directory
     // store string starting with headers: id | user_id | lId | ti | bo | gu | brs | beds | pB | privB
+
     // for 100% of primary records target...
       // generate and store unique id in listing ids
       // get random user id from stored user ids
@@ -74,6 +74,8 @@ writeStreamA.on('finish', () => {
       const privateBaths = _.random(publicBaths === 0 ? 1 : 0, 10);
       // add to main string: data corresponding to headers
     // write stored string to stream
+    const writeStreamL = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'listings.csv'));
+    // write
     // on finish event
       // log all data written
 
