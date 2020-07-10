@@ -3,6 +3,7 @@ const faker = require('faker');
 const path = require('path');
 const _ = require('lodash');
 const { bedStrings, amenityStrings, titleStrings } = require('../util/seedStrings.js');
+const pickWeighted = require('../util/pickWeighted.js');
 
 const targetedRecords = 100;
 const imageBaseURL = '#';
@@ -50,34 +51,48 @@ writeStreamA.on('finish', () => {
     // -------> next dependent process
 
     // =====generate listings CSV=====
-    // store string starting with headers: id | user_id | lId | ti | bo | gu | brs | beds | pB | privB
-
-    // for 100% of primary records target...
-      // generate and store unique id in listing ids
-      // get random user id from stored user ids
-      // generateTitle()
-      // generate body, five paragraphs with faker
-      // generate _random guests number between 1 and 10
-      // store number of bedrooms at 0
-      // store number of beds at 0
+    let listingsBlock = '"listingId","user_id","title","body","guests","bedrooms","beds","publicBaths","privateBaths"';
+    for (let i = 1; i <= targetedRecords; i += 1) {
+      const id = `${i}`.padStart(3, '0');
+      listingIds.push(id);
+      const user = _.sample(userIds);
+      const adjective = _.sample(titleStrings.adjective);
+      const place = _.sample(titleStrings.place);
+      const location = _.sample(titleStrings.location);
+      const title = `${adjective} ${place} in ${location}`;
+      const body = faker.lorem.paragraphs(5),
+      const guests = _.random(1, 5);
+      let totalBedroomsForListing = 0;
+      let totalBedsForListing = 0;
       let hasCommonArea = false;
-      // for random number between 1 and 10... weighted towards 2-3
-        // increment number of bedrooms
-        // create bedroom object with listingId property and all bed type properties : 0
-        // increment number of beds by random number between 1 and 5
-        // add unique bedroom id : random beds number generated property
-        // add property for bedroom name
-          // 1 in 3 chance of common area
-          // otherwise use bedroom + index
-        // push bedroom object to bedrooms array
+      let roomCounter = 1;
+      const randomNumRooms = pickWeighted(_.range(1, 10), [2, 3]);
+      for (let i = 0; i < randomNumRooms.length; i += 1) {
+        totalBedroomsForListing += 1;
+        const newBedroom = { listing_id: id, id: `br-${id}-${i}` };
+        bedStrings.forEach((bedType) => {
+          newBedroom[bedType] = 0;
+        });
+        const thisRoomBeds += _.random(1, 5);
+        totalBedsForListing += thisRoomBeds;
+        newBedroom[numBeds] = thisRoomBeds;
+        const brName = _.random(0, 3) ? `Bedroom${roomCounter}` : 'Common Space';
+        if (brName === 'Common Space') {
+          hasCommonArea = true;
+        } else {
+          roomCounter += 1;
+        }
+        newBedroom[name] = brName;
+        bedrooms.push(newBedroom);
+      }
       const publicBaths = _.random(0, 10);
       const privateBaths = _.random(publicBaths === 0 ? 1 : 0, 10);
-      // add to main string: data corresponding to headers
-    // write stored string to stream
+      listingsBlock += `"${id}","${user}","${title}","${body}","${guests}", "${totalBedroomsForListing}", "${totalBedsForListing}", "${publicBaths}","${privateBaths}"\n`;
+    }
     const writeStreamL = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'listings.csv'));
-    // write
-    // on finish event
-      // log all data written
+    writeStreamL.write(listingsBlock);
+    writeStreamL.on('finish', () => {
+      console.log('listings data written to file');
 
       // -------> next dependent process
 
@@ -107,9 +122,10 @@ writeStreamA.on('finish', () => {
         // on finish event
           // log all data written
 
-        // close the stream
-      // close the stream
-    // close the stream
+        // close the bedrooms stream
+      // close the amenities_listings stream
+    });
+    writeStreamL.end();
   });
   writeStreamU.end();
 });
