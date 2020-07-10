@@ -2,8 +2,6 @@ const fs = require('fs');
 const faker = require('faker');
 const path = require('path');
 const _ = require('lodash');
-const { bedStrings, titleStrings } = require('../../util/seedStrings.js');
-const pickWeighted = require('../../util/pickWeighted.js');
 const buildAmenities = require('./buildAmenities.js');
 const buildUsers = require('./buildUsers.js');
 const buildListings = require('./buildListings.js');
@@ -22,7 +20,7 @@ let amenityIds;
 let bedrooms;
 
 // =====generate amenities CSV=====
-const amenitiesBlock = buildAmenities((ids) => amenityIds = ids);
+const amenitiesBlock = buildAmenities((ids) => { amenityIds = ids; });
 const writeStreamA = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'amenities.csv'));
 writeStreamA.write(amenitiesBlock);
 writeStreamA.on('finish', () => {
@@ -31,7 +29,7 @@ writeStreamA.on('finish', () => {
   // -------> next dependent process
 
   // =====generate users CSV=====
-  const usersBlock = buildUsers(targetedRecords, images, (ids) => userIds = ids);
+  const usersBlock = buildUsers(targetedRecords, images, (ids) => { userIds = ids; });
   const writeStreamU = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'users.csv'));
   writeStreamU.write(usersBlock);
   writeStreamU.on('finish', () => {
@@ -40,9 +38,9 @@ writeStreamA.on('finish', () => {
     // -------> next dependent process
 
     // =====generate listings CSV=====
-    const listingsBlock = buildListings(targetedRecords, userIds, (listingIds, bedrooms) => {
-      listingIds = listingIds;
-      bedrooms = bedrooms;
+    const listingsBlock = buildListings(targetedRecords, userIds, (ids, rooms) => {
+      listingIds = ids;
+      bedrooms = rooms;
     });
     const writeStreamL = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'listings.csv'));
     writeStreamL.write(listingsBlock);

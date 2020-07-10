@@ -15,4 +15,3 @@ const buildAmenities = (sendBackIds) => {
 };
 
 module.exports = buildAmenities;
-

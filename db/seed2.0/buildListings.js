@@ -24,16 +24,16 @@ const buildListings = (targetedRecords, userIds, sendBackData) => {
     const title = `${adjective} ${place} in ${location}`;
 
     // =====ROOMS=====
-    let totalBedroomsForListing = pickWeighted(_.range(1, 10), [1, 2, 3]);
+    const totalBedroomsForListing = pickWeighted(_.range(1, 10), [1, 2, 3]);
     let totalBedsForListing = 0;
     let hasCommonArea = false;
     let roomCounter = 1;
 
-    for (let i = 0; i < totalBedroomsForListing; i += 1) {
+    for (let b = 0; b < totalBedroomsForListing; b += 1) {
       // =====Build base bedroom object=====
       const newBedroom = {
         listing_id: id,
-        id: `br-${id}-${i}`
+        id: `br-${id}-${b}`,
       };
       bedStrings.forEach((bedString) => {
         newBedroom[bedString] = 0;
@@ -43,7 +43,12 @@ const buildListings = (targetedRecords, userIds, sendBackData) => {
       const thisRoomBeds = _.random(1, 5);
       totalBedsForListing += thisRoomBeds;
       newBedroom.numBeds = thisRoomBeds;
-      const bedroomName = _.random(0, 3) ? `Bedroom${roomCounter}` : 'Common Space';
+      let bedroomName;
+      if (hasCommonArea) {
+        bedroomName = `Bedroom${roomCounter}`;
+      } else {
+        bedroomName = _.random(0, 3) ? `Bedroom${roomCounter}` : 'Common Space';
+      }
       if (bedroomName === 'Common Space') {
         hasCommonArea = true;
       } else {
@@ -60,4 +65,3 @@ const buildListings = (targetedRecords, userIds, sendBackData) => {
 };
 
 module.exports = buildListings;
-
