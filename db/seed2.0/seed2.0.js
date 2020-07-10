@@ -2,8 +2,11 @@ const fs = require('fs');
 const faker = require('faker');
 const path = require('path');
 const _ = require('lodash');
-const { bedStrings, amenityStrings, titleStrings } = require('../util/seedStrings.js');
-const pickWeighted = require('../util/pickWeighted.js');
+const { bedStrings, titleStrings } = require('../../util/seedStrings.js');
+const pickWeighted = require('../../util/pickWeighted.js');
+const buildAmenities = require('./buildAmenities.js');
+const buildUsers = require('./buildUsers.js');
+const buildListings = require('./buildListings.js');
 
 const targetedRecords = 100;
 const imageBaseURL = '#';
@@ -13,20 +16,13 @@ for (let i = 0; i < 1000; i += 1) {
 }
 
 // =====store re-used data between CSVs=====
-const userIds = [];
-const listingIds = [];
-const amenityIds = [];
-const bedrooms = [];
+let userIds;
+let listingIds;
+let amenityIds;
+let bedrooms;
 
 // =====generate amenities CSV=====
-let amenitiesBlock = '"id","type","amenity"\n';
-amenityStrings.forEach((category, catIndex) => {
-  category.amenities.forEach((amenity, amIndex) => {
-    const id = `am-${catIndex}-${amIndex}`;
-    amenityIds.push(id);
-    amenitiesBlock += `"${id}","${category.type}","${amenity}"\n`;
-  });
-});
+const amenitiesBlock = buildAmenities((ids) => amenityIds = ids);
 const writeStreamA = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'amenities.csv'));
 writeStreamA.write(amenitiesBlock);
 writeStreamA.on('finish', () => {
@@ -35,14 +31,7 @@ writeStreamA.on('finish', () => {
   // -------> next dependent process
 
   // =====generate users CSV=====
-  let usersBlock = '"userId","name","image"\n';
-  for (let i = 0; i < targetedRecords * 0.5; i += 1) {
-    const id = `us-${i}`;
-    userIds.push(id);
-    const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
-    const imageURL = _.sample(images);
-    usersBlock += `"${id}","${name}","${imageURL}"\n`;
-  }
+  const usersBlock = buildUsers(targetedRecords, images, (ids) => userIds = ids);
   const writeStreamU = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'users.csv'));
   writeStreamU.write(usersBlock);
   writeStreamU.on('finish', () => {
@@ -51,44 +40,10 @@ writeStreamA.on('finish', () => {
     // -------> next dependent process
 
     // =====generate listings CSV=====
-    let listingsBlock = '"listingId","user_id","title","body","guests","bedrooms","beds","publicBaths","privateBaths"';
-    for (let i = 1; i <= targetedRecords; i += 1) {
-      const id = `${i}`.padStart(3, '0');
-      listingIds.push(id);
-      const user = _.sample(userIds);
-      const adjective = _.sample(titleStrings.adjective);
-      const place = _.sample(titleStrings.place);
-      const location = _.sample(titleStrings.location);
-      const title = `${adjective} ${place} in ${location}`;
-      const body = faker.lorem.paragraphs(5),
-      const guests = _.random(1, 5);
-      let totalBedroomsForListing = 0;
-      let totalBedsForListing = 0;
-      let hasCommonArea = false;
-      let roomCounter = 1;
-      const randomNumRooms = pickWeighted(_.range(1, 10), [2, 3]);
-      for (let i = 0; i < randomNumRooms.length; i += 1) {
-        totalBedroomsForListing += 1;
-        const newBedroom = { listing_id: id, id: `br-${id}-${i}` };
-        bedStrings.forEach((bedType) => {
-          newBedroom[bedType] = 0;
-        });
-        const thisRoomBeds += _.random(1, 5);
-        totalBedsForListing += thisRoomBeds;
-        newBedroom[numBeds] = thisRoomBeds;
-        const brName = _.random(0, 3) ? `Bedroom${roomCounter}` : 'Common Space';
-        if (brName === 'Common Space') {
-          hasCommonArea = true;
-        } else {
-          roomCounter += 1;
-        }
-        newBedroom[name] = brName;
-        bedrooms.push(newBedroom);
-      }
-      const publicBaths = _.random(0, 10);
-      const privateBaths = _.random(publicBaths === 0 ? 1 : 0, 10);
-      listingsBlock += `"${id}","${user}","${title}","${body}","${guests}", "${totalBedroomsForListing}", "${totalBedsForListing}", "${publicBaths}","${privateBaths}"\n`;
-    }
+    const listingsBlock = buildListings(targetedRecords, userIds, (listingIds, bedrooms) => {
+      listingIds = listingIds;
+      bedrooms = bedrooms;
+    });
     const writeStreamL = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'listings.csv'));
     writeStreamL.write(listingsBlock);
     writeStreamL.on('finish', () => {
