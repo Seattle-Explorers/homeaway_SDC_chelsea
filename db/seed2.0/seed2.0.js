@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { Readable } = require('stream');
 const faker = require('faker');
 const path = require('path');
 const _ = require('lodash');
@@ -54,12 +55,12 @@ writeStreamA.on('finish', () => {
 
         // =====generate amenities for each listing=====
         const amenityListingBlock = buildJunction(listingIds, amenityIds);
-        const writeStreamAL = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'amenities_listings.csv'));
-        writeStreamAL.write(amenityListingBlock);
-        writeStreamAL.on('finish', () => {
+        const readableAmLi = Readable.from(amenityListingBlock);
+        const writeableAmLi = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'amenities_listings.csv'));
+        readableAmLi.pipe(writeableAmLi);
+        readableAmLi.on('end', () => {
           console.log('amenities_listings data written to file');
         });
-        writeStreamAL.end();
       });
       writeStreamB.end();
     });

@@ -24,7 +24,7 @@ const buildListings = (targetedRecords, userIds, sendBackData) => {
     const title = `${adjective} ${place} in ${location}`;
 
     // =====ROOMS=====
-    const totalBedroomsForListing = pickWeighted(_.range(1, 10), [2, 2, 3]);
+    const totalBedroomsForListing = pickWeighted(_.range(1, 11), [2, 2, 3]);
     let totalBedsForListing = 0;
     let hasCommonArea = false;
     let roomCounter = 1;
