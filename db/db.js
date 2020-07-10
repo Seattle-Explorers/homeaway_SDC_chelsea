@@ -1,7 +1,9 @@
 const Console = require('console');
 const mongoose = require('mongoose');
 
-const mongoUri = 'mongodb://mongo/airbnbdesc';
+const database = process.env.DB || 'localhost';
+
+const mongoUri = `mongodb://${database}/listings`;
 console.log('here-----', mongoUri);
 
 const db = mongoose.connect(mongoUri, {
