@@ -8,7 +8,7 @@ const buildListings = require('./buildListings.js');
 const buildBedrooms = require('./buildBedrooms.js');
 
 const targetedRecords = 100;
-const imageBaseURL = '#';
+const imageBaseURL = 'https://fec-images-6-18-20.s3-us-west-2.amazonaws.com/latitude';
 const images = [];
 for (let i = 0; i < 1000; i += 1) {
   images.push(`${imageBaseURL}/img${i}.jpg`);
@@ -27,16 +27,12 @@ writeStreamA.write(amenitiesBlock);
 writeStreamA.on('finish', () => {
   console.log('amenities data written to file');
 
-  // -------> next dependent process
-
   // =====generate users CSV=====
   const usersBlock = buildUsers(targetedRecords, images, (ids) => { userIds = ids; });
   const writeStreamU = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'users.csv'));
   writeStreamU.write(usersBlock);
   writeStreamU.on('finish', () => {
     console.log('users data written to file');
-
-    // -------> next dependent process
 
     // =====generate listings CSV=====
     const listingsBlock = buildListings(targetedRecords, userIds, (ids, rooms) => {
@@ -48,16 +44,12 @@ writeStreamA.on('finish', () => {
     writeStreamL.on('finish', () => {
       console.log('listings data written to file');
 
-      // -------> next dependent process
-
       // =====generate bedrooms=====
       const bedroomsBlock = buildBedrooms(bedrooms);
       const writeStreamB = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'bedrooms.csv'));
       writeStreamB.write(bedroomsBlock);
       writeStreamB.on('finish', () => {
         console.log('bedrooms data written to file');
-
-        // -------> next dependent process
 
         // =====generate amenities for each listing=====
         // create write stream to amenities_listings.csv in CSV files directory
