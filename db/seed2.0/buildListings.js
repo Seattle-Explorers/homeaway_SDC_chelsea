@@ -9,7 +9,7 @@ const buildListings = (targetedRecords, userIds, sendBackData) => {
   let listingsBlock = '"listingId","user_id","title","body","guests","bedrooms","beds","publicBaths","privateBaths"\n';
   for (let i = 1; i <= targetedRecords; i += 1) {
     // =====VARIOUS=====
-    const id = `${i}`.padStart(3, '0');
+    const id = `${i}`.padStart(8, '0');
     listingIds.push(id);
     const user = _.sample(userIds);
     const body = faker.lorem.paragraphs(2);
