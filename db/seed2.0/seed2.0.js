@@ -5,6 +5,7 @@ const _ = require('lodash');
 const buildAmenities = require('./buildAmenities.js');
 const buildUsers = require('./buildUsers.js');
 const buildListings = require('./buildListings.js');
+const buildBedrooms = require('./buildBedrooms.js');
 
 const targetedRecords = 100;
 const imageBaseURL = '#';
@@ -50,15 +51,11 @@ writeStreamA.on('finish', () => {
       // -------> next dependent process
 
       // =====generate bedrooms=====
-      // create write stream to bedrooms.csv in CSV files directory
-      // store string starting with headers: id | listing_id | location | each type of bed
-      // for each bedroom in stored bedrooms...
-        // for number of beds in this bedroom...
-          // increment a randomly chosen bed type by 1
-        // add to main string: id | listing_id | location | each bed type number
-      // write stored string to stream
-      // on finish event
-        // log all data written
+      const bedroomsBlock = buildBedrooms(bedrooms);
+      const writeStreamB = fs.createWriteStream(path.resolve(__dirname, 'CSVs', 'bedrooms.csv'));
+      writeStreamB.write(bedroomsBlock);
+      writeStreamB.on('finish', () => {
+        console.log('bedrooms data written to file');
 
         // -------> next dependent process
 
@@ -75,8 +72,9 @@ writeStreamA.on('finish', () => {
         // on finish event
           // log all data written
 
-        // close the bedrooms stream
-      // close the amenities_listings stream
+        // close the amenities_listings stream
+      });
+      writeStreamB.end();
     });
     writeStreamL.end();
   });

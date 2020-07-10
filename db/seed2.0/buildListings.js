@@ -24,7 +24,7 @@ const buildListings = (targetedRecords, userIds, sendBackData) => {
     const title = `${adjective} ${place} in ${location}`;
 
     // =====ROOMS=====
-    const totalBedroomsForListing = pickWeighted(_.range(1, 10), [1, 2, 3]);
+    const totalBedroomsForListing = pickWeighted(_.range(1, 10), [2, 2, 3]);
     let totalBedsForListing = 0;
     let hasCommonArea = false;
     let roomCounter = 1;
@@ -36,6 +36,8 @@ const buildListings = (targetedRecords, userIds, sendBackData) => {
         id: `br-${id}-${b}`,
       };
       bedStrings.forEach((bedString) => {
+        const spaces = /\s/;
+        bedString = bedString.replace(spaces, '');
         newBedroom[bedString] = 0;
       });
 
