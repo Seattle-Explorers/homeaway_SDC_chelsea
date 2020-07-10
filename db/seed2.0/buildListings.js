@@ -6,42 +6,53 @@ const pickWeighted = require('../../util/pickWeighted.js');
 const buildListings = (targetedRecords, userIds, sendBackData) => {
   const listingIds = [];
   const bedrooms = [];
-  let listingsBlock = '"listingId","user_id","title","body","guests","bedrooms","beds","publicBaths","privateBaths"';
+  let listingsBlock = '"listingId","user_id","title","body","guests","bedrooms","beds","publicBaths","privateBaths"\n';
   for (let i = 1; i <= targetedRecords; i += 1) {
+    // =====VARIOUS=====
     const id = `${i}`.padStart(3, '0');
     listingIds.push(id);
     const user = _.sample(userIds);
+    const body = faker.lorem.paragraphs(2);
+    const guests = _.random(1, 5);
+    const publicBaths = _.random(0, 10);
+    const privateBaths = _.random(publicBaths === 0 ? 1 : 0, 10);
+
+    // =====TITLE=====
     const adjective = _.sample(titleStrings.adjective);
     const place = _.sample(titleStrings.place);
     const location = _.sample(titleStrings.location);
     const title = `${adjective} ${place} in ${location}`;
-    const body = faker.lorem.paragraphs(5),
-    const guests = _.random(1, 5);
-    let totalBedroomsForListing = 0;
+
+    // =====ROOMS=====
+    let totalBedroomsForListing = pickWeighted(_.range(1, 10), [1, 2, 3]);
     let totalBedsForListing = 0;
     let hasCommonArea = false;
     let roomCounter = 1;
-    const randomNumRooms = pickWeighted(_.range(1, 10), [2, 3]);
-    for (let i = 0; i < randomNumRooms.length; i += 1) {
-      totalBedroomsForListing += 1;
-      const newBedroom = { listing_id: id, id: `br-${id}-${i}` };
-      bedStrings.forEach((bedType) => {
-        newBedroom[bedType] = 0;
+
+    for (let i = 0; i < totalBedroomsForListing; i += 1) {
+      // =====Build base bedroom object=====
+      const newBedroom = {
+        listing_id: id,
+        id: `br-${id}-${i}`
+      };
+      bedStrings.forEach((bedString) => {
+        newBedroom[bedString] = 0;
       });
+
+      // =====Add room-specific properties=====
       const thisRoomBeds = _.random(1, 5);
       totalBedsForListing += thisRoomBeds;
-      newBedroom[numBeds] = thisRoomBeds;
-      const brName = _.random(0, 3) ? `Bedroom${roomCounter}` : 'Common Space';
-      if (brName === 'Common Space') {
+      newBedroom.numBeds = thisRoomBeds;
+      const bedroomName = _.random(0, 3) ? `Bedroom${roomCounter}` : 'Common Space';
+      if (bedroomName === 'Common Space') {
         hasCommonArea = true;
       } else {
         roomCounter += 1;
       }
-      newBedroom[name] = brName;
+      newBedroom.name = bedroomName;
       bedrooms.push(newBedroom);
     }
-    const publicBaths = _.random(0, 10);
-    const privateBaths = _.random(publicBaths === 0 ? 1 : 0, 10);
+    // =====COMBINE=====
     listingsBlock += `"${id}","${user}","${title}","${body}","${guests}", "${totalBedroomsForListing}", "${totalBedsForListing}", "${publicBaths}","${privateBaths}"\n`;
   }
   sendBackData(listingIds, bedrooms);
