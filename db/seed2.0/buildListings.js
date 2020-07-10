@@ -60,7 +60,7 @@ const buildListings = (targetedRecords, userIds, sendBackData) => {
       bedrooms.push(newBedroom);
     }
     // =====COMBINE=====
-    listingsBlock += `"${id}","${user}","${title}","${body}","${guests}", "${totalBedroomsForListing}", "${totalBedsForListing}", "${publicBaths}","${privateBaths}"\n`;
+    listingsBlock += `"${id}","${user}","${title}","${body}",${guests}, ${totalBedroomsForListing}, ${totalBedsForListing}, ${publicBaths},${privateBaths}\n`;
   }
   sendBackData(listingIds, bedrooms);
   return listingsBlock;
