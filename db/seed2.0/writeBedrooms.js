@@ -8,12 +8,12 @@ const writeBedrooms = (listingIds, writable, logDone) => {
   const header = '"id","listing_id","location","double","queen","single","sofa_bed","king","small_double","couch","bunk_bed","floor_mattress","air_mattress","crib","toddler_bed","hammock","water_bed"\n';
 
   writable.write(header, () => {
-    writeLines();
+    writeLines(); // eslint-disable-line
 
     function writeLines() {
       let okayToWrite = true;
 
-      while(listing >= 0 && okayToWrite) {
+      while (listing >= 0 && okayToWrite) {
         const listingId = listingIds[listing];
 
         const totalBedroomsForListing = pickWeighted(_.range(1, 11), [2, 2, 3]);
@@ -29,7 +29,7 @@ const writeBedrooms = (listingIds, writable, logDone) => {
           };
           bedStrings.forEach((bedString) => {
             const spaces = /\s/;
-            bedString = bedString.replace(spaces, '');
+            bedString = bedString.replace(spaces, ''); // eslint-disable-line
             newBedroom[bedString] = 0;
           });
 
@@ -58,7 +58,7 @@ const writeBedrooms = (listingIds, writable, logDone) => {
 
           const {
             id,
-            listing_id,
+            listing_id, // eslint-disable-line
             name,
             Double,
             Queen,
@@ -76,7 +76,7 @@ const writeBedrooms = (listingIds, writable, logDone) => {
             WaterBed,
           } = newBedroom;
 
-          block += `"${id}","${listing_id}","${name}",${Double},${Queen},${Single},${SofaBed},${King},${SmallDouble},${Couch},${BunkBed},${FloorMattress},${AirMattress},${Crib},${ToddlerBed},${Hammock},${WaterBed}\n`;
+          block += `"${id}","${listing_id}","${name}",${Double},${Queen},${Single},${SofaBed},${King},${SmallDouble},${Couch},${BunkBed},${FloorMattress},${AirMattress},${Crib},${ToddlerBed},${Hammock},${WaterBed}\n`; // eslint-disable-line camelcase
         }
 
         if (listing === 0) {

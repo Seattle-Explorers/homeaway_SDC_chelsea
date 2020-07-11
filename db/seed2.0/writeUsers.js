@@ -7,7 +7,7 @@ const writeUsers = (targetedRecords, images, writable, sendBackIds) => {
   const userIds = [];
 
   writable.write('"userId","name","image"\n', () => {
-    writeLines();
+    writeLines(); // eslint-disable-line
 
     function writeLines() {
       let okayToWrite = true;

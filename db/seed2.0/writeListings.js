@@ -1,7 +1,6 @@
 const faker = require('faker');
 const _ = require('lodash');
-const { titleStrings, bedStrings } = require('../../util/seedStrings.js');
-const pickWeighted = require('../../util/pickWeighted.js');
+const { titleStrings } = require('../../util/seedStrings.js');
 
 const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
   const listingIds = [];
@@ -9,12 +8,12 @@ const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
   let i = 1;
 
   writable.write('"listingId","user_id","title","body","guests","bedrooms","beds","publicBaths","privateBaths"\n', () => {
-    writeLines();
+    writeLines(); // eslint-disable-line
 
     function writeLines() {
       let okayToWrite = true;
 
-      while (lines >= 0 & okayToWrite) {
+      while (lines >= 0 && okayToWrite) {
         if (lines === 0) {
           sendBackData(listingIds);
           break;

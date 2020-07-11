@@ -4,7 +4,7 @@ const pickWeighted = require('../../util/pickWeighted.js');
 
 const writeAmenitiesListings = (listingIds, amenityIds, writable, logDone) => {
   const amenityNumbers = [];
-  listingIds.forEach((listingId) => {
+  listingIds.forEach(() => {
     amenityNumbers.push(pickWeighted(_.range(5, 21), [5, 5, 5]));
   });
 
@@ -14,12 +14,12 @@ const writeAmenitiesListings = (listingIds, amenityIds, writable, logDone) => {
   const header = '"id","amenity_id","listing_id","description"\n';
 
   writable.write(header, () => {
-    writeLines();
+    writeLines(); // eslint-disable-line
 
     function writeLines() {
       let okayToWrite = true;
 
-      while(blocks >= 0 && okayToWrite) {
+      while (blocks >= 0 && okayToWrite) {
         const listingId = listingIds[i];
         const shuffledAmenities = _.shuffle(amenityIds);
         const listingAmenities = [];
@@ -28,8 +28,8 @@ const writeAmenitiesListings = (listingIds, amenityIds, writable, logDone) => {
           listingAmenities.push(shuffledAmenities[j]);
         }
         let block = '';
-        listingAmenities.forEach((amenityId, i) => {
-          const id = `am_li-${listingId}-${i}`;
+        listingAmenities.forEach((amenityId, idx) => {
+          const id = `am_li-${listingId}-${idx}`;
           const description = _.random(0, 1) ? faker.lorem.sentences(1) : '';
           block += `"${id}","${amenityId}","${listingId}","${description}"\n`;
         });
