@@ -6,3 +6,4 @@ client/dist
 db/seed2.0/CSVs
 db/seed2.0/userImages
 db/seed2.0/.DS_Store
+db/.DS_Store
