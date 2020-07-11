@@ -27,43 +27,49 @@ let bedrooms;
 // =====generate amenities CSV=====
 const amenitiesBlock = buildAmenities((ids) => { amenityIds = ids; });
 const readableA = Readable.from(amenitiesBlock);
-const writeableA = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities.csv'));
-readableA.pipe(writeableA);
+const writableA = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities.csv'));
+readableA.pipe(writableA);
 readableA.on('end', () => {
   console.log('amenities data written to file');
 
   // =====generate users CSV=====
-  const usersBlock = buildUsers(targetedRecords, images, (ids) => { userIds = ids; });
-  const readableU = Readable.from(usersBlock);
-  const writeableU = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'users.csv'));
-  readableU.pipe(writeableU);
-  readableU.on('end', () => {
+  const writableU = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'users.csv'));
+  const usersBlock = buildUsers(targetedRecords, images, writableU, (ids) => {
+    userIds = ids;
     console.log('users data written to file');
+    writableU.end();
+
+  // const readableU = Readable.from(usersBlock);
+  // const writeableU = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'users.csv'));
+  // readableU.pipe(writeableU);
+  // readableU.on('end', () => {
+  //   console.log('users data written to file');
 
     // =====generate listings CSV=====
     const listingsBlock = buildListings(targetedRecords, userIds, (ids, rooms) => {
       listingIds = ids;
       bedrooms = rooms;
     });
+    console.log('made it here');
     const readableL = Readable.from(listingsBlock);
-    const writeableL = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'listings.csv'));
-    readableL.pipe(writeableL);
+    const writableL = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'listings.csv'));
+    readableL.pipe(writableL);
     readableL.on('end', () => {
       console.log('listings data written to file');
 
       // =====generate bedrooms=====
       const bedroomsBlock = buildBedrooms(bedrooms);
       const readableB = Readable.from(bedroomsBlock);
-      const writeableB = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'bedrooms.csv'));
-      readableB.pipe(writeableB);
+      const writableB = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'bedrooms.csv'));
+      readableB.pipe(writableB);
       readableB.on('end', () => {
         console.log('bedrooms data written to file');
 
         // =====generate amenities for each listing=====
         const amenityListingBlock = buildJunction(listingIds, amenityIds);
         const readableAmLi = Readable.from(amenityListingBlock);
-        const writeableAmLi = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities_listings.csv'));
-        readableAmLi.pipe(writeableAmLi);
+        const writableAmLi = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities_listings.csv'));
+        readableAmLi.pipe(writableAmLi);
         readableAmLi.on('end', () => {
           console.log('amenities_listings data written to file');
         });
