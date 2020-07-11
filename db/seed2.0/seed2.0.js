@@ -4,8 +4,8 @@ const faker = require('faker');
 const path = require('path');
 const _ = require('lodash');
 const buildAmenities = require('./buildAmenities.js');
-const buildUsers = require('./buildUsers.js');
-const buildListings = require('./buildListings.js');
+const writeUsers = require('./writeUsers.js');
+const writeListings = require('./writeListings.js');
 const buildBedrooms = require('./buildBedrooms.js');
 const buildJunction = require('./buildJunction.js');
 
@@ -34,10 +34,11 @@ readableA.on('end', () => {
 
   // =====generate users CSV=====
   const writableU = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'users.csv'));
-  const usersBlock = buildUsers(targetedRecords, images, writableU, (ids) => {
+  writeUsers(targetedRecords, images, writableU, (ids) => {
     userIds = ids;
     console.log('users data written to file');
     writableU.end();
+
 
   // const readableU = Readable.from(usersBlock);
   // const writeableU = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'users.csv'));
@@ -46,16 +47,19 @@ readableA.on('end', () => {
   //   console.log('users data written to file');
 
     // =====generate listings CSV=====
-    const listingsBlock = buildListings(targetedRecords, userIds, (ids, rooms) => {
+    const writableL = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'listings.csv'));
+    writeListings(targetedRecords, userIds, writableL, (ids, rooms) => {
       listingIds = ids;
       bedrooms = rooms;
-    });
-    console.log('made it here');
-    const readableL = Readable.from(listingsBlock);
-    const writableL = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'listings.csv'));
-    readableL.pipe(writableL);
-    readableL.on('end', () => {
       console.log('listings data written to file');
+      writableL.end();
+
+    // console.log('made it here');
+    // const readableL = Readable.from(listingsBlock);
+    // const writableL = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'listings.csv'));
+    // readableL.pipe(writableL);
+    // readableL.on('end', () => {
+    //   console.log('listings data written to file');
 
       // =====generate bedrooms=====
       const bedroomsBlock = buildBedrooms(bedrooms);

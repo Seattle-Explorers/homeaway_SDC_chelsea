@@ -1,7 +1,7 @@
 const faker = require('faker');
 const _ = require('lodash');
 
-const buildUsers = (targetedRecords, images, writable, sendBackIds) => {
+const writeUsers = (targetedRecords, images, writable, sendBackIds) => {
   let lines = targetedRecords * 0.5;
   let i = 0;
   const userIds = [];
@@ -21,7 +21,7 @@ const buildUsers = (targetedRecords, images, writable, sendBackIds) => {
 
         if (lines === 0) {
           writable.write(newLine, 'utf-8', () => { sendBackIds(userIds); });
-          return;
+          break;
         } else {
           okayToWrite = writable.write(newLine);
           lines -= 1;
@@ -36,4 +36,4 @@ const buildUsers = (targetedRecords, images, writable, sendBackIds) => {
   });
 };
 
-module.exports = buildUsers;
+module.exports = writeUsers;
