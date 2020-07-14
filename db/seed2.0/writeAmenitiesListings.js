@@ -2,7 +2,7 @@ const _ = require('lodash');
 const faker = require('faker');
 const pickWeighted = require('../../util/pickWeighted.js');
 
-const writeAmenitiesListings = (listingIds, amenityIds, writable, logDone) => {
+const writeAmenitiesListings = (listingIds, amenityIds, writable, fileType, logDone) => {
   const amenityNumbers = [];
   listingIds.forEach(() => {
     amenityNumbers.push(pickWeighted(_.range(5, 21), [5, 5, 5]));

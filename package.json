@@ -13,7 +13,8 @@
     "client:build": "webpack --mode production",
     "client:dev": "webpack --watch --mode development",
     "updateSnapshots": "jest --updateSnapshot",
-    "seed2.0": "node db/seed2.0/seed2.0.js"
+    "seedpsql": "node db/seed2.0/seedpsql.js",
+    "seedadb": "node db/seed2.0/seedadb.js"
   },
   "repository": {
     "type": "git",

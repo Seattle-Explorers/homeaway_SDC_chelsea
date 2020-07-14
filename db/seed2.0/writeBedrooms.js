@@ -2,7 +2,7 @@ const _ = require('lodash');
 const { bedStrings } = require('../../util/seedStrings.js');
 const pickWeighted = require('../../util/pickWeighted.js');
 
-const writeBedrooms = (listingIds, writable, logDone) => {
+const writeBedrooms = (listingIds, writable, fileType, logDone) => {
   let listing = listingIds.length - 1;
 
   const header = '"id","listing_id","location","double","queen","single","sofa_bed","king","small_double","couch","bunk_bed","floor_mattress","air_mattress","crib","toddler_bed","hammock","water_bed"\n';

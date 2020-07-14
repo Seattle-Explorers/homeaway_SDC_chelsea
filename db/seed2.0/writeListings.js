@@ -2,19 +2,19 @@ const faker = require('faker');
 const _ = require('lodash');
 const { titleStrings } = require('../../util/seedStrings.js');
 
-const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
+const writeListings = (targetedRecords, userIds, writable, fileType, sendBackData) => {
   const listingIds = [];
-  let lines = targetedRecords;
+  let line = targetedRecords;
   let i = 1;
 
-  writable.write('"listingId","user_id","title","body","guests","bedrooms","beds","publicBaths","privateBaths"\n', () => {
+  writable.write('"listingId","user_id","title","body","guests","publicBaths","privateBaths"\n', () => {
     writeLines(); // eslint-disable-line
 
     function writeLines() {
       let okayToWrite = true;
 
-      while (lines >= 0 && okayToWrite) {
-        if (lines === 0) {
+      while (line >= 0 && okayToWrite) {
+        if (line === 0) {
           sendBackData(listingIds);
           break;
         } else {
@@ -33,12 +33,12 @@ const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
 
           const newLine = `"${id}","${user}","${title}","${body}",${guests},${publicBaths},${privateBaths}\n`;
           okayToWrite = writable.write(newLine);
-          lines -= 1;
+          line -= 1;
           i += 1;
         }
       }
 
-      if (lines > 0) {
+      if (line > 0) {
         writable.once('drain', writeLines);
       }
     }
