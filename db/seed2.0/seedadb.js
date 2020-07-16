@@ -1,3 +1,4 @@
+/* eslint-disable no-console, no-use-before-define, no-param-reassign */
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
@@ -20,7 +21,7 @@ for (let i = 0; i < targetedRecords * 0.5; i += 1) {
 const amenityOptions = buildAmenities();
 const amenityIds = amenityOptions.map((option) => option.id);
 const writable = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'latitudeData.jsonl'));
-writeJSON(); // eslint-disable-line
+writeJSON();
 
 function writeJSON() {
   let okayToWrite = true;
@@ -39,7 +40,6 @@ function writeJSON() {
     listingBedrooms.forEach((bedroom) => {
       delete bedroom.id;
       delete bedroom.listing_id;
-      delete bedroom.numBeds;
       const keys = Object.keys(bedroom);
       keys.forEach((key) => {
         if (bedroom[key] === 0) {
@@ -58,6 +58,7 @@ function writeJSON() {
         }
       });
     });
+
     newDocument.sleepingArrangements = listingBedrooms;
     newDocument.bedrooms = listingBedrooms.length;
     newDocument.beds = _.flatten(listingBedrooms.map((bedroom) => bedroom.beds)).length;

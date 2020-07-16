@@ -1,5 +1,4 @@
-const faker = require('faker');
-const _ = require('lodash');
+/* eslint-disable no-use-before-define */
 const { createUser } = require('./generateData.js');
 
 const writeUsers = (targetedRecords, images, writable, sendBackIds) => {
@@ -8,17 +7,13 @@ const writeUsers = (targetedRecords, images, writable, sendBackIds) => {
   const userIds = [];
 
   writable.write('"userId","name","image"\n', () => {
-    writeLines(); // eslint-disable-line
+    writeLines();
 
     function writeLines() {
       let okayToWrite = true;
-
       while (line >= 0 && okayToWrite) {
         const { userId, name, image } = createUser(i);
-        // const id = `us-${i}`;
         userIds.push(userId);
-        // const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
-        // const imageURL = _.sample(images);
         const newLine = `"${userId}","${name}","${image}"\n`;
 
         if (line === 0) {
@@ -30,7 +25,6 @@ const writeUsers = (targetedRecords, images, writable, sendBackIds) => {
           i += 1;
         }
       }
-
       if (line > 0) {
         writable.once('drain', writeLines);
       }

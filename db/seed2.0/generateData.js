@@ -64,8 +64,6 @@ module.exports.createListingBedrooms = (listingId) => {
       bedString = bedString.replace(spaces, ''); // eslint-disable-line
       newBedroom[bedString] = 0;
     });
-    const thisRoomBeds = _.random(1, 5);
-    newBedroom.numBeds = thisRoomBeds;
     let bedroomName;
     if (hasCommonArea) {
       bedroomName = `Bedroom${roomCounter}`;
@@ -78,6 +76,8 @@ module.exports.createListingBedrooms = (listingId) => {
       roomCounter += 1;
     }
     newBedroom.location = bedroomName;
+
+    const thisRoomBeds = _.random(1, 5);
     for (let i = 0; i < thisRoomBeds; i += 1) {
       const index = Math.floor(Math.random() * bedStrings.length);
       const spaces = /\s/;
