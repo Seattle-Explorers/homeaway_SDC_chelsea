@@ -1,7 +1,8 @@
 const faker = require('faker');
 const _ = require('lodash');
+const { createUser } = require('./generateData.js');
 
-const writeUsers = (targetedRecords, images, writable, fileType, sendBackIds) => {
+const writeUsers = (targetedRecords, images, writable, sendBackIds) => {
   let line = targetedRecords * 0.5;
   let i = 0;
   const userIds = [];
@@ -13,11 +14,12 @@ const writeUsers = (targetedRecords, images, writable, fileType, sendBackIds) =>
       let okayToWrite = true;
 
       while (line >= 0 && okayToWrite) {
-        const id = `us-${i}`;
-        userIds.push(id);
-        const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
-        const imageURL = _.sample(images);
-        const newLine = `"${id}","${name}","${imageURL}"\n`;
+        const { userId, name, image } = createUser(i);
+        // const id = `us-${i}`;
+        userIds.push(userId);
+        // const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
+        // const imageURL = _.sample(images);
+        const newLine = `"${userId}","${name}","${image}"\n`;
 
         if (line === 0) {
           writable.write(newLine, 'utf-8', () => { sendBackIds(userIds); });

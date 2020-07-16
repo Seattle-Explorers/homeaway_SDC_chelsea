@@ -18,7 +18,7 @@ for (let i = 0; i < 1000; i += 1) {
 
 // =====generate amenities CSV=====
 let amenityIds;
-const amenitiesBlock = buildAmenities('csv', (ids) => { amenityIds = ids; });
+const amenitiesBlock = buildAmenities((ids) => { amenityIds = ids; });
 const readableA = Readable.from(amenitiesBlock);
 const writableA = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities.csv'));
 readableA.pipe(writableA);
@@ -27,24 +27,24 @@ readableA.on('end', () => {
 
   // =====generate users CSV=====
   const writableU = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'users.csv'));
-  writeUsers(targetedRecords, images, writableU, 'csv', (userIds) => {
+  writeUsers(targetedRecords, images, writableU, (userIds) => {
     console.log('users data written to file');
     writableU.end();
 
     // =====generate listings CSV=====
     const writableL = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'listings.csv'));
-    writeListings(targetedRecords, userIds, writableL, 'csv', (listingIds) => {
+    writeListings(targetedRecords, userIds, writableL, (listingIds) => {
       console.log('listings data written to file');
       writableL.end();
 
       // =====generate bedrooms CSV=====
       const writableB = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'bedrooms.csv'));
-      writeBedrooms(listingIds, writableB, 'csv', () => {
+      writeBedrooms(listingIds, writableB, () => {
         console.log('bedrooms data written to file');
 
         // =====generate amenities_listings CSV=====
         const writableAmLi = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities_listings.csv'));
-        writeAmenitiesListings(listingIds, amenityIds, writableAmLi, 'csv', () => {
+        writeAmenitiesListings(listingIds, amenityIds, writableAmLi, () => {
           console.log('amenities_listings data written to file');
         });
       });
