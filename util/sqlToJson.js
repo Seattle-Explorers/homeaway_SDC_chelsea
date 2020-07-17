@@ -33,10 +33,9 @@ module.exports.convertSQLToJSON = (rows) => {
   const bedTypes = ['double', 'queen', 'single', 'sofa_bed', 'king', 'small_double', 'couch', 'bunk_bed', 'floor_mattress', 'air_mattress', 'crib', 'toddler_bed', 'hammock', 'water_bed'];
 
   const uniqueNames = {};
-
-  const roomNames = rows
+  rows
     .map((row) => row.location)
-    .forEach((location) => uniqueNames[location] = 1);
+    .forEach((location) => { uniqueNames[location] = 1; });
 
   Object.keys(uniqueNames).forEach((roomName) => {
     const roomData = rows.filter((row) => row.location === roomName)[0];
@@ -68,7 +67,7 @@ module.exports.convertSQLToJSON = (rows) => {
   allAmenities.forEach((amenity) => {
     uniqueAmenities[amenity.amenity] = amenity;
   });
-  for (let amenity in uniqueAmenities) {
+  for (const amenity in uniqueAmenities) { // eslint-disable-line
     json.amenities.push(uniqueAmenities[amenity]);
   }
 
