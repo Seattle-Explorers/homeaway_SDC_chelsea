@@ -91,7 +91,7 @@ module.exports.createListingBedrooms = (listingId) => {
 };
 
 module.exports.createListingAmenities = (listingId, amenityIds) => {
-  const numberOfAmenities = pickWeighted(_.range(5, 21), [5, 5, 5]);
+  const numberOfAmenities = pickWeighted(_.range(5, 21), [5, 6, 7]);
   const listingAmenities = [];
   const shuffledAmenities = _.shuffle(amenityIds);
   const chosenAmenities = [];

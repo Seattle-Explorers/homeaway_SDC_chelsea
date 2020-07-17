@@ -1,14 +1,8 @@
 /* eslint-disable camelcase, no-use-before-define */
-const _ = require('lodash');
-const pickWeighted = require('../../util/pickWeighted.js');
 const { createListingAmenities } = require('./generateData.js');
 
 const writeAmenitiesListings = (listingIds, amenityIds, writable, logDone) => {
-  const amenityNumbers = [];
-  listingIds.forEach(() => {
-    amenityNumbers.push(pickWeighted(_.range(5, 21), [5, 5, 5]));
-  });
-  let blocks = listingIds.length;
+  let blocks = listingIds.length - 1;
   let i = 0;
   const header = '"id","amenity_id","listing_id","description"\n';
 
