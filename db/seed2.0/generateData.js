@@ -10,7 +10,7 @@ for (let i = 0; i < 1000; i += 1) {
 }
 
 module.exports.buildAmenities = () => {
-  let amenityOptions = [];
+  const amenityOptions = [];
   amenityStrings.forEach((category, catIndex) => {
     category.amenities.forEach((amenity, amIndex) => {
       const newAmenity = {};
@@ -31,14 +31,14 @@ module.exports.createUser = (i) => {
   return newUser;
 };
 
-module.exports.createListing = (userIds, i) => {
+module.exports.createListing = (i, userIds = [null]) => {
   const newListing = {};
   newListing.listingId = `${i}`.padStart(8, '0');
   newListing.user_id = _.sample(userIds);
   newListing.body = faker.lorem.paragraphs(2);
   newListing.guests = _.random(1, 5);
   newListing.publicBaths = _.random(0, 10);
-  newListing.privateBaths = _.random(publicBaths === 0 ? 1 : 0, 10);
+  newListing.privateBaths = _.random(newListing.publicBaths === 0 ? 1 : 0, 10);
 
   const adjective = _.sample(titleStrings.adjective);
   const place = _.sample(titleStrings.place);
@@ -64,8 +64,6 @@ module.exports.createListingBedrooms = (listingId) => {
       bedString = bedString.replace(spaces, ''); // eslint-disable-line
       newBedroom[bedString] = 0;
     });
-    const thisRoomBeds = _.random(1, 5);
-    newBedroom.numBeds = thisRoomBeds;
     let bedroomName;
     if (hasCommonArea) {
       bedroomName = `Bedroom${roomCounter}`;
@@ -77,7 +75,9 @@ module.exports.createListingBedrooms = (listingId) => {
     } else {
       roomCounter += 1;
     }
-    newBedroom.name = bedroomName;
+    newBedroom.location = bedroomName;
+
+    const thisRoomBeds = _.random(1, 5);
     for (let i = 0; i < thisRoomBeds; i += 1) {
       const index = Math.floor(Math.random() * bedStrings.length);
       const spaces = /\s/;
@@ -91,7 +91,7 @@ module.exports.createListingBedrooms = (listingId) => {
 };
 
 module.exports.createListingAmenities = (listingId, amenityIds) => {
-  let numberOfAmenities = pickWeighted(_.range(5, 21), [5, 5, 5]);
+  const numberOfAmenities = pickWeighted(_.range(5, 21), [5, 6, 7]);
   const listingAmenities = [];
   const shuffledAmenities = _.shuffle(amenityIds);
   const chosenAmenities = [];

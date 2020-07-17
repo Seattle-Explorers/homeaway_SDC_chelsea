@@ -1,6 +1,6 @@
 const { amenityStrings } = require('../../util/seedStrings.js');
 
-const buildAmenities = (fileType, sendBackIds) => {
+const buildAmenities = (sendBackIds) => {
   const amenityIds = [];
   let amenitiesBlock = '"id","type","amenity"\n';
   amenityStrings.forEach((category, catIndex) => {

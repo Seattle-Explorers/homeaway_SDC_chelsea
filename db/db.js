@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Console = require('console');
 const mongoose = require('mongoose');
 

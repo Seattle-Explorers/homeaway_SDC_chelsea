@@ -16,10 +16,12 @@
   sleepingArrangements: [
     {
       id: number,
-      beds: {
-        type: string,
-        amount: number,
-      },
+      beds: [
+        {
+          type: string,
+          amount: number,
+        }
+      ],
       location: string,
     }
   ],
