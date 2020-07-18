@@ -8,9 +8,12 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 import Description from './components/Description';
+import getListingId from '../../util/urlParser.js';
+
+const listingId = getListingId(window.location.href);
 
 function makeUrl(id) {
-  return `/api/description/${id}`;
+  return `/${id}/api/description`;
 }
 
 class App extends React.Component {
@@ -49,4 +52,4 @@ App.propTypes = {
   endpoint: PropTypes.string.isRequired,
 };
 
-ReactDOM.render(<App endpoint={makeUrl('001')} />, document.getElementById('description'));
+ReactDOM.render(<App endpoint={makeUrl(listingId)} />, document.getElementById('description'));

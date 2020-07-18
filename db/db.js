@@ -1,19 +1,10 @@
-/* eslint-disable no-console */
-const Console = require('console');
-const mongoose = require('mongoose');
+const { Client } = require('pg');
 
-const database = process.env.DB || 'localhost';
-
-const mongoUri = `mongodb://${database}/listings`;
-console.log('here-----', mongoUri);
-
-const db = mongoose.connect(mongoUri, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
+const host = process.env.DB || 'localhost';
+const client = new Client({
+  host,
+  database: 'latitudedb',
 });
-const { connection } = mongoose;
-connection.on('error', Console.error.bind(console, 'connection error:'));
-connection.once('open', () => Console.log('connected to mongodb'));
+client.connect();
 
-module.exports.connection = connection;
-module.exports.db = db;
+module.exports.client = client;
