@@ -1,13 +1,13 @@
 /* eslint-disable no-use-before-define */
 const _ = require('lodash');
-const { createListing } = require('./generateData.js');
+const { createListing, createListingBedrooms } = require('./generateData.js');
 
 const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
   const listingIds = [];
   let line = targetedRecords;
   let i = 1;
 
-  writable.write('"listingId","user_id","title","body","guests","publicBaths","privateBaths"\n', () => {
+  writable.write('"listingId","user_id","title","body","guests","publicBaths","privateBaths","bedrooms","beds","sleepingArrangements"\n', () => {
     writeLines();
 
     function writeLines() {
@@ -26,8 +26,23 @@ const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
             title,
           } = createListing(i);
           listingIds.push(listingId);
+          // =====changes=====
+          let listingBedrooms = createListingBedrooms(listingId);
+          const numBedrooms = listingBedrooms.length;
+          let numBeds = 0;
+          listingBedrooms.forEach((room) => {
+            for (const key in room) {
+              if (Number(room[key])) {
+                numBeds += room[key];
+              }
+            }
+          });
+          listingBedrooms = JSON.stringify(listingBedrooms);
+          const doubleQuotes = /"/g;
+          listingBedrooms = listingBedrooms.replace(doubleQuotes, '""');
+          // =================
           const user = _.sample(userIds);
-          const newLine = `"${listingId}","${user}","${title}","${body}",${guests},${publicBaths},${privateBaths}\n`;
+          const newLine = `"${listingId}","${user}","${title}","${body}",${guests},${publicBaths},${privateBaths},${numBedrooms},${numBeds},"${listingBedrooms}"\n`;
           okayToWrite = writable.write(newLine);
           line -= 1;
           i += 1;

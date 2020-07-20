@@ -39,16 +39,16 @@ readableA.on('end', () => {
       writableL.end();
 
       // =====generate bedrooms CSV=====
-      const writableB = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'bedrooms.csv'));
-      writeBedrooms(listingIds, writableB, () => {
-        console.log('bedrooms data written to file');
+      // const writableB = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'bedrooms.csv'));
+      // writeBedrooms(listingIds, writableB, () => {
+      //   console.log('bedrooms data written to file');
 
         // =====generate amenities_listings CSV=====
         const writableAmLi = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities_listings.csv'));
         writeAmenitiesListings(listingIds, amenityIds, writableAmLi, () => {
           console.log('amenities_listings data written to file');
         });
-      });
+      // });
     });
   });
 });
