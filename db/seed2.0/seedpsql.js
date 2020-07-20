@@ -5,7 +5,6 @@ const path = require('path');
 const buildAmenities = require('./buildAmenities.js');
 const writeUsers = require('./writeUsers.js');
 const writeListings = require('./writeListings.js');
-const writeBedrooms = require('./writeBedrooms.js');
 const writeAmenitiesListings = require('./writeAmenitiesListings.js');
 
 const pathForGeneratedFiles = path.resolve(__dirname, '..', '..', '..', 'latitude_db_files');
@@ -38,17 +37,11 @@ readableA.on('end', () => {
       console.log('listings data written to file');
       writableL.end();
 
-      // =====generate bedrooms CSV=====
-      // const writableB = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'bedrooms.csv'));
-      // writeBedrooms(listingIds, writableB, () => {
-      //   console.log('bedrooms data written to file');
-
-        // =====generate amenities_listings CSV=====
-        const writableAmLi = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities_listings.csv'));
-        writeAmenitiesListings(listingIds, amenityIds, writableAmLi, () => {
-          console.log('amenities_listings data written to file');
-        });
-      // });
+      // =====generate amenities_listings CSV=====
+      const writableAmLi = fs.createWriteStream(path.resolve(pathForGeneratedFiles, 'amenities_listings.csv'));
+      writeAmenitiesListings(listingIds, amenityIds, writableAmLi, () => {
+        console.log('amenities_listings data written to file');
+      });
     });
   });
 });

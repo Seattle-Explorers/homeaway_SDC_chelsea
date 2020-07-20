@@ -32,34 +32,23 @@ module.exports.convertSQLToJSON = (rows) => {
     amenities: [],
   };
 
-  // sleepingArrangements extraction
-  // const bedTypes = ['double', 'queen', 'single', 'sofa_bed', 'king', 'small_double', 'couch', 'bunk_bed', 'floor_mattress', 'air_mattress', 'crib', 'toddler_bed', 'hammock', 'water_bed'];
+  // restructure sleepingArrangements
+  const bedTypes = ['Double', 'Queen', 'Single', 'SofaBed', 'King', 'SmallDouble', 'Couch', 'BunkBed', 'FloorMattress', 'AirMattress', 'Crib', 'ToddlerBed', 'Hammock', 'WaterBed'];
 
-  // const uniqueNames = {};
-  // rows
-  //   .map((row) => row.location)
-  //   .forEach((location) => { uniqueNames[location] = 1; });
-
-  // Object.keys(uniqueNames).forEach((roomName) => {
-  //   const roomData = rows.filter((row) => row.location === roomName)[0];
-  //   json.bedrooms += 1;
-  //   const bedroom = {
-  //     location: roomName,
-  //     beds: [],
-  //   };
-  //   bedTypes.forEach((type, i) => {
-  //     if (roomData[type] > 0) {
-  //       json.beds += roomData[type];
-  //       const newBed = {
-  //         type: bedStrings[i],
-  //         amount: roomData[type],
-  //       };
-  //       bedroom.beds.push(newBed);
-  //     }
-  //   });
-  //   json.sleepingArrangements.push(bedroom);
-  // });
-
+  json.sleepingArrangements.forEach((room) => {
+    room.beds = [];
+    for (const bed in room) {
+      if (bed !== 'location' && bed !== 'id' && bed !== 'beds') {
+        const typeIndex = bedTypes.indexOf(bed);
+        const bedObj = {
+          type: bedStrings[typeIndex],
+          amount: room[bed],
+        };
+        room.beds.push(bedObj);
+        delete room[bed];
+      }
+    }
+  });
   // amenities extraction
   const allAmenities = rows.map((row) => {
     const { type, amenity, description } = row;

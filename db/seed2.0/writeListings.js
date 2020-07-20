@@ -26,7 +26,6 @@ const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
             title,
           } = createListing(i);
           listingIds.push(listingId);
-          // =====changes=====
           let listingBedrooms = createListingBedrooms(listingId);
           const numBedrooms = listingBedrooms.length;
           let numBeds = 0;
@@ -40,7 +39,6 @@ const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
           listingBedrooms = JSON.stringify(listingBedrooms);
           const doubleQuotes = /"/g;
           listingBedrooms = listingBedrooms.replace(doubleQuotes, '""');
-          // =================
           const user = _.sample(userIds);
           const newLine = `"${listingId}","${user}","${title}","${body}",${guests},${publicBaths},${privateBaths},${numBedrooms},${numBeds},"${listingBedrooms}"\n`;
           okayToWrite = writable.write(newLine);
