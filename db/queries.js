@@ -42,3 +42,12 @@ module.exports.switchedJoinDirections = `
       ON l.user_id = u.userId
     WHERE l.listingId = $1
 `;
+
+module.exports.testFewerJoins = `
+  SELECT
+    l.listingId, l.title, l.body, l.guests, l.publicBaths, l.privateBaths, l.bedrooms, l.beds, l.sleepingArrangements,
+    u.name, u.image
+  FROM listings AS l, users AS u
+    WHERE l.listingId = $1
+    AND l.user_id = u.userId
+`;
