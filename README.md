@@ -19,7 +19,6 @@ An open-source experiment in system design, intending to scale the database and 
 ## API
 
 To get an individual listing:
-  - Base URL: http://localhost:3000
   - Endpoint: /api/description/:id
   - Method: GET
   - Data: {}
@@ -29,7 +28,7 @@ To get an individual listing:
     - Content: JSON object. For example:
         {
           "id": 12345,
-          "listingId": "001",
+          "listingId": "00000001",
           "user": {
             "userId": 67891,
             "name": "Jane Doe",

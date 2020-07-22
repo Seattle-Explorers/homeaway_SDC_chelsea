@@ -6,7 +6,7 @@ const { implicitJoinQuery } = require('../db/queries.js');
 
 const app = express();
 
-app.get('/:id/api/description', (req, res) => {
+app.get('/api/description/:id', (req, res) => {
   const values = [req.params.id];
   const query = {
     name: 'core-query-plan',

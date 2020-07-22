@@ -8,7 +8,7 @@ const app = require('./app');
 const port = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
-app.use('/:id/description', express.static(path.join(__dirname, '../client/dist')));
+app.use('description/:id', express.static(path.join(__dirname, '../client/dist')));
 app.use(compression());
 
 app.get('/description', (req, res) => {

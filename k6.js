@@ -18,7 +18,7 @@ export default function () {
   if (counter > resetIndex) {
     counter = 0;
   }
-  const res = http.get(`http://ec2-54-187-65-212.us-west-2.compute.amazonaws.com/${ids[counter]}/api/description`);
+  const res = http.get(`http://ec2-54-187-65-212.us-west-2.compute.amazonaws.com/api/description/${ids[counter]}`);
   counter += 1;
   const checkRes = check(res, {
     'status is 200': (r) => r.status === 200,
