@@ -13,7 +13,7 @@ import getListingId from '../../util/urlParser.js';
 const listingId = getListingId(window.location.href);
 
 function makeUrl(id) {
-  return `/${id}/api/description`;
+  return `/api/description/${id}`;
 }
 
 class App extends React.Component {
