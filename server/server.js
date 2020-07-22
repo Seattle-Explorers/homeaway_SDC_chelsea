@@ -1,18 +1,20 @@
-const Console = require('console');
+require('newrelic');
 const path = require('path');
 const express = require('express');
 const compression = require('compression');
+const morgan = require('morgan');
 const app = require('./app');
 
 const port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(morgan('dev'));
+app.use('/:id/description', express.static(path.join(__dirname, '../client/dist')));
 app.use(compression());
 
-app.get('/:id', (req, res) => {
+app.get('/description', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
 });
 
 app.listen(port, () => {
-  Console.log(`listening on port ${port}`);
+  console.log(`listening on port ${port}`);
 });

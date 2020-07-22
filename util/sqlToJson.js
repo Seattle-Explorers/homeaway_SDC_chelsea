@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign, no-restricted-syntax */
 const { bedStrings } = require('./seedStrings.js');
 
 module.exports.convertSQLToJSON = (rows) => {
@@ -10,6 +11,9 @@ module.exports.convertSQLToJSON = (rows) => {
     guests,
     publicbaths,
     privatebaths,
+    bedrooms,
+    beds,
+    sleepingarrangements,
   } = rows[0];
 
   const json = {
@@ -23,41 +27,30 @@ module.exports.convertSQLToJSON = (rows) => {
     guests,
     publicBaths: publicbaths,
     privateBaths: privatebaths,
-    sleepingArrangements: [],
+    bedrooms,
+    beds,
+    sleepingArrangements: sleepingarrangements,
     amenities: [],
-    beds: 0,
-    bedrooms: 0,
   };
 
-  // sleepingArrangements extraction
-  const bedTypes = ['double', 'queen', 'single', 'sofa_bed', 'king', 'small_double', 'couch', 'bunk_bed', 'floor_mattress', 'air_mattress', 'crib', 'toddler_bed', 'hammock', 'water_bed'];
+  // restructure sleepingArrangements
+  const bedTypes = ['Double', 'Queen', 'Single', 'SofaBed', 'King', 'SmallDouble', 'Couch', 'BunkBed', 'FloorMattress', 'AirMattress', 'Crib', 'ToddlerBed', 'Hammock', 'WaterBed'];
 
-  const uniqueNames = {};
-  rows
-    .map((row) => row.location)
-    .forEach((location) => { uniqueNames[location] = 1; });
-
-  Object.keys(uniqueNames).forEach((roomName) => {
-    const roomData = rows.filter((row) => row.location === roomName)[0];
-    json.bedrooms += 1;
-    const bedroom = {
-      location: roomName,
-      beds: [],
-    };
-    bedTypes.forEach((type, i) => {
-      if (roomData[type] > 0) {
-        json.beds += roomData[type];
-        const newBed = {
-          type: bedStrings[i],
-          amount: roomData[type],
+  json.sleepingArrangements.forEach((room) => {
+    room.beds = [];
+    for (const bed in room) {
+      if (bed !== 'location' && bed !== 'id' && bed !== 'beds') {
+        const typeIndex = bedTypes.indexOf(bed);
+        const bedObj = {
+          type: bedStrings[typeIndex],
+          amount: room[bed],
         };
-        bedroom.beds.push(newBed);
+        room.beds.push(bedObj);
+        delete room[bed];
       }
-    });
-    json.sleepingArrangements.push(bedroom);
+    }
   });
-
-  // amenities extraction
+  // restructure amenities
   const allAmenities = rows.map((row) => {
     const { type, amenity, description } = row;
     return { type, amenity, description };

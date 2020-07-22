@@ -56,14 +56,8 @@ module.exports.createListingBedrooms = (listingId) => {
 
   for (let b = 0; b < totalBedroomsForListing; b += 1) {
     const newBedroom = {
-      listing_id: listingId,
       id: `br-${listingId}-${b}`,
     };
-    bedStrings.forEach((bedString) => {
-      const spaces = /\s/;
-      bedString = bedString.replace(spaces, ''); // eslint-disable-line
-      newBedroom[bedString] = 0;
-    });
     let bedroomName;
     if (hasCommonArea) {
       bedroomName = `Bedroom${roomCounter}`;
@@ -83,7 +77,11 @@ module.exports.createListingBedrooms = (listingId) => {
       const spaces = /\s/;
       let bedType = bedStrings[index];
       bedType = bedType.replace(spaces, '');
-      newBedroom[bedType] += 1;
+      if (bedType in newBedroom) {
+        newBedroom[bedType] += 1;
+      } else {
+        newBedroom[bedType] = 1;
+      }
     }
     listingBedrooms.push(newBedroom);
   }

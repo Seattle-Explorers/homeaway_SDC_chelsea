@@ -1,2 +1,10 @@
 node_modules
 npm-debug.log
+newrelic_agent.log
+newrelic.js
+db/seed2.0/CSVs
+db/seed2.0/userImages
+db/seed2.0/.DS_Store
+db/.DS_Store
+util/profileImages
+test
