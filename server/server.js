@@ -15,6 +15,10 @@ app.get('/description/main.js/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/dist', 'main.js'));
 });
 
+app.get('/loaderio-e34f18fc91010c35600d737fd75801fa.txt', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'loaderio-e34f18fc91010c35600d737fd75801fa.txt'));
+});
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
