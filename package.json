@@ -10,6 +10,7 @@
     "seed": "node db/seed.js",
     "server": "nodemon server/server.js",
     "server:prod": "node db/seed.js  && node server/server.js",
+    "server:prod-no-seed": "node server/server.js",
     "client:build": "webpack --mode production",
     "client:dev": "webpack --watch --mode development",
     "updateSnapshots": "jest --updateSnapshot",

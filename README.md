@@ -1,15 +1,19 @@
 # Latitude
 An open-source experiment in system design, intending to scale the database and server layers of the listing description widget for an online homestay marketplace.
 
-## Start the application for development
- - npm install
- - npm run seed
- - npm run client:dev
- - npm run server
+## Start the application
+ - 'npm install'
+ - 'npm run client:dev' (development) || 'npm run client:build' (production)
+ - Add New Relic config file with license key, filename 'newrelic.js' (as named in .gitignore), or remove New Relic reference in server.js
+ - 'npm run server' (development) || 'npm run server:prod-no-seed' (production)
+  - Environment variables:
+    - PORT | Port number for server; defaults to 3000
+    - DB | PostgreSQL database host URL; defaults to 'localhost'
+    - USER | PostgreSQL database user; defaults to 'chelseaschmidt'
+    - PW | PostgreSQL database password; defaults to ''
 
 ## System requirements
  - Node v10.20.1
- - MongoDB v4.2.7
  - Nodemon v2.0.4
 
 ## API
@@ -61,10 +65,3 @@ To get an individual listing:
     - Condition: If listing ID doesn't exist
     - Status code: 404 NOT FOUND
     - Content: {}
-
-## noSQL schema design under consideration
-See noSQL Schema Design file saved in the root of this repository.
-
-## SQL schema design under consideration
-
-See SQL Schema Design file saved in the root of this repository.

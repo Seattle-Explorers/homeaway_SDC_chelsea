@@ -23,7 +23,7 @@ module.exports = {
   plugins: [
     'react',
   ],
-  ignorePatterns: ['client/dist/*', 'node_modules/*'],
+  ignorePatterns: ['client/dist/*', 'node_modules/*', 'newrelic.js'],
   rules: {
   },
 };

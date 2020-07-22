@@ -30,7 +30,7 @@ const writeListings = (targetedRecords, userIds, writable, sendBackData) => {
           const numBedrooms = listingBedrooms.length;
           let numBeds = 0;
           listingBedrooms.forEach((room) => {
-            for (const key in room) {
+            for (const key in room) { // eslint-disable-line
               if (Number(room[key])) {
                 numBeds += room[key];
               }

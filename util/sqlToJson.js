@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign, no-restricted-syntax */
 const { bedStrings } = require('./seedStrings.js');
 
 module.exports.convertSQLToJSON = (rows) => {
@@ -49,7 +50,7 @@ module.exports.convertSQLToJSON = (rows) => {
       }
     }
   });
-  // amenities extraction
+  // restructure amenities
   const allAmenities = rows.map((row) => {
     const { type, amenity, description } = row;
     return { type, amenity, description };

@@ -1,15 +1,10 @@
 const { error } = require('console');
 const express = require('express');
-// const bodyParser = require('body-parser');
-// const morgan = require('morgan');
 const { pool } = require('../db/db');
 const { convertSQLToJSON } = require('../util/sqlToJson.js');
-const { explicitJoinQuery, implicitJoinQuery, switchedJoinDirections, testFewerJoins } = require('../db/queries.js');
+const { implicitJoinQuery } = require('../db/queries.js');
 
 const app = express();
-
-// app.use(bodyParser.json());
-// app.use(morgan('dev'));
 
 app.get('/:id/api/description', (req, res) => {
   const values = [req.params.id];
