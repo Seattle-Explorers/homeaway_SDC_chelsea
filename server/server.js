@@ -8,11 +8,11 @@ const app = require('./app');
 const port = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
-app.use('/description/:id', express.static(path.join(__dirname, '../client/dist')));
+app.use('/:id', express.static(path.join(__dirname, '../client/dist')));
 app.use(compression());
 
-app.get('/description', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
+app.get('/description/main.js/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/dist', 'main.js'));
 });
 
 app.listen(port, () => {
