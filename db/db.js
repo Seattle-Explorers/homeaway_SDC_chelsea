@@ -6,6 +6,8 @@ const pool = new Pool({
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 20000,
   database: 'latitudedb',
+  user: process.env.USER || 'chelseaschmidt',
+  password: process.env.PW || '',
 });
 
 pool.on('error', (err, client) => {
