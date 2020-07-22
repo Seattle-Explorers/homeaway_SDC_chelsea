@@ -1,17 +1,17 @@
 const { Pool } = require('pg');
 
-const host = process.env.DB;
-const user = process.env.USER;
-const password = process.env.PW;
+const host = process.env.DB || 'localhost';
+const user = process.env.USER || 'chelseaschmidt';
+const password = process.env.PW || '';
 
 const pool = new Pool({
-  host: host || 'localhost',
+  host,
   max: 15,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 20000,
   database: 'latitudedb',
-  user: user || 'chelseaschmidt',
-  password: password || '',
+  user,
+  password,
 });
 
 pool.on('error', (err) => {
@@ -20,7 +20,7 @@ pool.on('error', (err) => {
 });
 
 pool.on('connect', () => {
-  console.log(`connected to ${host} by user ${user}`);
+  console.log(`connected to database at ${host} via user ${user}`);
 });
 
 module.exports.pool = pool;
