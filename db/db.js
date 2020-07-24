@@ -19,8 +19,4 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 
-pool.on('connect', () => {
-  console.log(`connected to database at ${host} via user ${user}`);
-});
-
 module.exports.pool = pool;
