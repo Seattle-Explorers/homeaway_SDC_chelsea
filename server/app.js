@@ -1,10 +1,13 @@
 const { error } = require('console');
 const express = require('express');
+// const morgan = require('morgan');
 const { pool } = require('../db/db');
 const { convertSQLToJSON } = require('../util/sqlToJson.js');
 const { implicitJoinQuery } = require('../db/queries.js');
 
 const app = express();
+
+// app.use(morgan('dev'));
 
 app.get('/api/description/:id', (req, res) => {
   const values = [req.params.id];

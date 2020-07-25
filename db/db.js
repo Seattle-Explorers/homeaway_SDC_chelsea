@@ -6,7 +6,7 @@ const password = process.env.PW || '';
 
 const pool = new Pool({
   host,
-  max: 15,
+  max: 30,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 20000,
   database: 'latitudedb',
@@ -17,10 +17,6 @@ const pool = new Pool({
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
   process.exit(-1);
-});
-
-pool.on('connect', () => {
-  console.log(`connected to database at ${host} via user ${user}`);
 });
 
 module.exports.pool = pool;
