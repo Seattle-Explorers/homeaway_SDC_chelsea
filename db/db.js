@@ -6,7 +6,7 @@ const password = process.env.PW || '';
 
 const pool = new Pool({
   host,
-  max: 30,
+  max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 20000,
   database: 'latitudedb',
