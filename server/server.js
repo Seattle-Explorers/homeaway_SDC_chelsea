@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 // app.use(morgan('dev'));
 
-app.get('/loaderio-ba3097407f703e6b4d8ef352258b6863', (req, res) => {
+app.get('/loaderio-f9e39372748a8c0c265c512ed081554a', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'loaderio.txt'));
 });
 
