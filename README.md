@@ -1,5 +1,5 @@
 # Latitude
-An open-source experiment in system design, intending to scale the database and server layers of the listing description widget for an online homestay marketplace.
+An open-source experiment in system design, intending to scale the database and server layers of the description service for a preexisting room reservation app.
 
 ## Start the application
  - 'npm install'
