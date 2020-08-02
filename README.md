@@ -1,5 +1,5 @@
 # Latitude
-An open-source experiment in system design, intending to scale the database and server layers of the description service for a preexisting room reservation app.
+Prototype of a system architecture designed to handle production-level web traffic, refactoring a preexisting Description microservice of a service-oriented room reservation app. The Description service shows descriptive details about each available room listing.
 
 ## System requirements
   - Node 10.20.1
@@ -8,15 +8,15 @@ An open-source experiment in system design, intending to scale the database and 
   - PostgreSQL 12.3
 
 ## Start the application
+  - Add New Relic config file with license key, filename 'newrelic.js' (as named in .gitignore), or remove New Relic reference in server/server.js
   - npm install
   - npm run client:dev || npm run client:build
-  - Add New Relic config file with license key, filename 'newrelic.js' (as named in .gitignore), or remove New Relic reference in server.js
   - npm run server:prod-no-seed || npm run server
   - Environment variables:
-    - PORT | Port number for server; defaults to 3000
-    - DB | PostgreSQL database host URL; defaults to 'localhost'
-    - USER | PostgreSQL database user; defaults to 'chelseaschmidt'
-    - PW | PostgreSQL database password; defaults to ''
+    - **PORT |** Port number for server; defaults to 3000
+    - **DB |** PostgreSQL database host URL; defaults to 'localhost'
+    - **USER |** PostgreSQL database user; defaults to 'chelseaschmidt'
+    - **PW |** PostgreSQL database password; defaults to ''
 
 ## API
 
