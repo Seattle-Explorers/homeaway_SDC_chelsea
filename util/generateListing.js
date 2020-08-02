@@ -1,7 +1,4 @@
-// const fs = require('fs');
-// const fsp = require('fs').promises;
 const path = require('path');
-// const axios = require('axios');
 const _ = require('lodash');
 const faker = require('faker');
 const { bedStrings, amenityStrings, titleStrings } = require('./seedStrings.js');
@@ -21,23 +18,6 @@ function randomIterations(min, max, fn) {
 async function generateUser(userId) {
   const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
   const imageURL = 'http://lorempixel.com/56/56/';
-  // `https://github.com/Team-Danger/FEC-Description-Component/util/profileImages/${userId}.jpg`;
-  // const image = await axios({
-  //   method: 'get',
-  //   url: 'http://lorempixel.com/56/56/',
-  //   responseType: 'stream',
-
-  // });
-  // fsp.stat(imagePath)
-  //   .catch((err) => {
-  //     if (err.code === 'ENOENT') {
-  //       return fsp.mkdir(imagePath);
-  //     }
-  //     throw err;
-  //   })
-  //   .then(() => {
-  //     image.data.pipe(fs.createWriteStream(path.join(imagePath, `${userId}.jpg`)));
-  //   });
   return {
     userId,
     name,

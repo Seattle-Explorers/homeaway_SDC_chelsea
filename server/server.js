@@ -2,12 +2,9 @@ require('newrelic');
 const path = require('path');
 const express = require('express');
 const compression = require('compression');
-// const morgan = require('morgan');
 const app = require('./app');
 
 const port = process.env.PORT || 3000;
-
-// app.use(morgan('dev'));
 
 app.get('/loaderio-f9e39372748a8c0c265c512ed081554a', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'loaderio.txt'));
