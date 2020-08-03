@@ -1,4 +1,4 @@
-# Latitude
+# Latitude: Description Service
 Prototype of a system architecture designed to handle production-level web traffic, refactoring a preexisting Description microservice of a service-oriented room reservation app. The Description service shows descriptive details about each available room listing.
 
 ## System requirements
