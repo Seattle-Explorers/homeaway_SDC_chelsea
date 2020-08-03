@@ -11,35 +11,35 @@ Prototype of a system architecture designed to handle production-level web traff
 
 #### 1. Create tables without indexes
 CREATE TABLE amenities (<br/>
-  id TEXT,<br/>
-  type TEXT NOT NULL,<br/>
-  amenity TEXT NOT NULL<br/>
+&nbsp;&nbsp;id TEXT,<br/>
+&nbsp;&nbsp;type TEXT NOT NULL,<br/>
+&nbsp;&nbsp;amenity TEXT NOT NULL<br/>
 );
 
 CREATE TABLE users (<br/>
-  userId TEXT,<br/>
-  name TEXT NOT NULL,<br/>
-  image TEXT NOT NULL<br/>
+&nbsp;&nbsp;userId TEXT,<br/>
+&nbsp;&nbsp;name TEXT NOT NULL,<br/>
+&nbsp;&nbsp;image TEXT NOT NULL<br/>
 );
 
 CREATE TABLE listings (<br/>
-  listingId CHAR(8),<br/>
-  user_id TEXT NOT NULL,<br/>
-  title TEXT NOT NULL,<br/>
-  body TEXT NOT NULL,<br/>
-  guests INT NOT NULL,<br/>
-  publicBaths INT NOT NULL,<br/>
-  privateBaths INT NOT NULL,<br/>
-  bedrooms INT NOT NULL,<br/>
-  beds INT NOT NULL,<br/>
-  sleepingArrangements JSONB NOT NULL<br/>
+&nbsp;&nbsp;listingId CHAR(8),<br/>
+&nbsp;&nbsp;user_id TEXT NOT NULL,<br/>
+&nbsp;&nbsp;title TEXT NOT NULL,<br/>
+&nbsp;&nbsp;body TEXT NOT NULL,<br/>
+&nbsp;&nbsp;guests INT NOT NULL,<br/>
+&nbsp;&nbsp;publicBaths INT NOT NULL,<br/>
+&nbsp;&nbsp;privateBaths INT NOT NULL,<br/>
+&nbsp;&nbsp;bedrooms INT NOT NULL,<br/>
+&nbsp;&nbsp;beds INT NOT NULL,<br/>
+&nbsp;&nbsp;sleepingArrangements JSONB NOT NULL<br/>
 );
 
 CREATE TABLE amenities_listings (<br/>
-  id TEXT,<br/>
-  amenity_id TEXT NOT NULL,<br/>
-  listing_id CHAR(8) NOT NULL,<br/>
-  description TEXT<br/>
+&nbsp;&nbsp;id TEXT,<br/>
+&nbsp;&nbsp;amenity_id TEXT NOT NULL,<br/>
+&nbsp;&nbsp;listing_id CHAR(8) NOT NULL,<br/>
+&nbsp;&nbsp;description TEXT<br/>
 );
 
 #### 2. Generate CSVs with demo data
@@ -51,19 +51,19 @@ npm run seedpsql
   - To change the number of records generated, update the *targetedRecords* variable in db/seed2.0/seedpsql.js. By default, this script will generate 10M primary room listing records, which equates to over 100M records across the four SQL tables.
 
 #### 3. Copy demo data from CSV files into PostgreSQL
-COPY amenities FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)
-COPY users FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)
-COPY listings FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)
-COPY amenities_listings FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)
+COPY amenities FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)<br/>
+COPY users FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)<br/>
+COPY listings FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)<br/>
+COPY amenities_listings FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)<br/>
 
 #### 4. Add indexes to tables
-ALTER TABLE amenities ADD PRIMARY KEY (id);
-ALTER TABLE users ADD PRIMARY KEY (userId);
-ALTER TABLE listings ADD PRIMARY KEY (listingId);
-ALTER TABLE amenities_listings ADD PRIMARY KEY (id);
+ALTER TABLE amenities ADD PRIMARY KEY (id);<br/>
+ALTER TABLE users ADD PRIMARY KEY (userId);<br/>
+ALTER TABLE listings ADD PRIMARY KEY (listingId);<br/>
+ALTER TABLE amenities_listings ADD PRIMARY KEY (id);<br/>
 
-ALTER TABLE listings ADD FOREIGN KEY (user_id) REFERENCES users (userId);
-ALTER TABLE amenities_listings ADD FOREIGN KEY (amenity_id) REFERENCES amenities (id);
+ALTER TABLE listings ADD FOREIGN KEY (user_id) REFERENCES users (userId);<br/>
+ALTER TABLE amenities_listings ADD FOREIGN KEY (amenity_id) REFERENCES amenities (id);<br/>
 ALTER TABLE amenities_listings ADD FOREIGN KEY (listing_id) REFERENCES listings (listingId);
 
 CREATE INDEX amenities_listings_listingId ON amenities_listings (listing_id) INCLUDE (description, amenity_id);
