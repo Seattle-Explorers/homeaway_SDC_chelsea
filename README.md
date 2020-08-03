@@ -9,40 +9,40 @@ Prototype of a system architecture designed to handle production-level web traff
 
 ## Seed PostgreSQL with demo data
 
-#### Create tables without indexes
-CREATE TABLE amenities (
-  id TEXT,
-  type TEXT NOT NULL,
-  amenity TEXT NOT NULL
+#### 1. Create tables without indexes
+CREATE TABLE amenities (<br/>
+  id TEXT,<br/>
+  type TEXT NOT NULL,<br/>
+  amenity TEXT NOT NULL<br/>
 );
 
-CREATE TABLE users (
-  userId TEXT,
-  name TEXT NOT NULL,
-  image TEXT NOT NULL
+CREATE TABLE users (<br/>
+  userId TEXT,<br/>
+  name TEXT NOT NULL,<br/>
+  image TEXT NOT NULL<br/>
 );
 
-CREATE TABLE listings (
-  listingId CHAR(8),
-  user_id TEXT NOT NULL,
-  title TEXT NOT NULL,
-  body TEXT NOT NULL,
-  guests INT NOT NULL,
-  publicBaths INT NOT NULL,
-  privateBaths INT NOT NULL,
-  bedrooms INT NOT NULL,
-  beds INT NOT NULL,
-  sleepingArrangements JSONB NOT NULL
+CREATE TABLE listings (<br/>
+  listingId CHAR(8),<br/>
+  user_id TEXT NOT NULL,<br/>
+  title TEXT NOT NULL,<br/>
+  body TEXT NOT NULL,<br/>
+  guests INT NOT NULL,<br/>
+  publicBaths INT NOT NULL,<br/>
+  privateBaths INT NOT NULL,<br/>
+  bedrooms INT NOT NULL,<br/>
+  beds INT NOT NULL,<br/>
+  sleepingArrangements JSONB NOT NULL<br/>
 );
 
-CREATE TABLE amenities_listings (
-  id TEXT,
-  amenity_id TEXT NOT NULL,
-  listing_id CHAR(8) NOT NULL,
-  description TEXT
+CREATE TABLE amenities_listings (<br/>
+  id TEXT,<br/>
+  amenity_id TEXT NOT NULL,<br/>
+  listing_id CHAR(8) NOT NULL,<br/>
+  description TEXT<br/>
 );
 
-#### Generate CSVs with demo data
+#### 2. Generate CSVs with demo data
 npm run seedpsql
   - This script will generate four CSV files in ../../../latitude_db_files
 
@@ -50,16 +50,13 @@ npm run seedpsql
 
   - To change the number of records generated, update the *targetedRecords* variable in db/seed2.0/seedpsql.js. By default, this script will generate 10M primary room listing records, which equates to over 100M records across the four SQL tables.
 
-#### Copy demo data from CSV files into PostgreSQL
-\copy amenities FROM '<file path>' WITH (FORMAT CSV, HEADER TRUE)
+#### 3. Copy demo data from CSV files into PostgreSQL
+COPY amenities FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)
+COPY users FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)
+COPY listings FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)
+COPY amenities_listings FROM '&lt;file path&gt;' WITH (FORMAT CSV, HEADER TRUE)
 
-\copy users FROM '<file path>' WITH (FORMAT CSV, HEADER TRUE)
-
-\copy listings FROM '<file path>' WITH (FORMAT CSV, HEADER TRUE)
-
-\copy amenities_listings FROM '<file path>' WITH (FORMAT CSV, HEADER TRUE)
-
-#### Add indexes to tables
+#### 4. Add indexes to tables
 ALTER TABLE amenities ADD PRIMARY KEY (id);
 ALTER TABLE users ADD PRIMARY KEY (userId);
 ALTER TABLE listings ADD PRIMARY KEY (listingId);
