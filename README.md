@@ -17,6 +17,8 @@ Prototype of a system architecture designed to handle production-level web traff
     - **DB |** PostgreSQL database host URL; defaults to 'localhost'
     - **USER |** PostgreSQL database user; defaults to 'chelseaschmidt'
     - **PW |** PostgreSQL database password; defaults to ''
+  - Navigate to http://localhost:3000/00000001
+    - To toggle between available room listings, change the requested resource in the URL from 00000001 to any ID between 00000002 - 10000000
 
 ## API
 
