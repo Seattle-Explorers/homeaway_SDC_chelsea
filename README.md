@@ -1,5 +1,5 @@
 # Latitude: Description Service
-Prototype of a system architecture designed to handle production-level web traffic, refactoring a preexisting Description microservice of a service-oriented room reservation app. The Description service shows descriptive details about each available room listing.
+Refactor of an existing Description microservice as part of prototyping a system architecture able to handle production-level web traffic, for a service-oriented room reservation app. The Description service shows descriptive details about each available room listing.
 
 ## System requirements
   - Node 10.20.1
